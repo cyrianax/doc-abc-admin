@@ -7,17 +7,18 @@ const serviceMap = {
 
 const penddingRequest = {
   list: [],
-  remove () {},
-  get () {}
+  removeRepeat () {
+
+    const list = this.find({
+      url: config.baseURL + config.url,
+      method: config.method
+    })
+  },
+  find ({ url, method }) {
+    return this.list.filter(request => (request.url === url && request.method === method))
+  }
 }
 
-const getPenddingItem = request => {
-  const item: CancelParams[] = this.penddingList.filter(item => {
-    return item.url === request.url && item.api === request.api &&
-      item.method === request.method && item.canceled === request.canceled
-  })
-  return item
-}
 const cancelPenddingItem = request => {
   if (request.cancel) {
     request.cancel({ request, code: '409', msg: true })
@@ -66,7 +67,10 @@ instance.interceptors.request.use(
       })
     })
 
-    config. 
+    config.repeatable && penddingRequest.removeRepeat({
+      url: config.baseURL + config.url,
+      method: config.method
+    })
 
     return config
   },
