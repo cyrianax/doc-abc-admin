@@ -2,18 +2,21 @@
   "name": "temp",
   "version": "0.0.0",
   "scripts": {
+    "start": "npm run dev",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
   "dependencies": {
     "axios": "^0.21.1",
-    "vue": "^3.2.6"
+    "vue": "^3.2.6",
+    "vue-router": "^4.0.11"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.6.0",
     "@vitejs/plugin-vue-jsx": "^1.1.7",
     "@vue/compiler-sfc": "^3.2.6",
+    "sass": "^1.39.0",
     "vite": "^2.5.2",
     "vite-plugin-svg-icons": "^1.0.4"
   }

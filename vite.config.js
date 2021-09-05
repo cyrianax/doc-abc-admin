@@ -7,7 +7,7 @@ import icon from 'vite-plugin-svg-icons'
 export default defineConfig({
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, '/src'),
+      '@': path.resolve(__dirname, './src'),
     },
   },
   plugins: [
