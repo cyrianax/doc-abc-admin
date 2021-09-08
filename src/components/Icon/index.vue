@@ -4,7 +4,7 @@
   </svg>
 </template>
 
-<script setup>
+<script>
 import { computed } from 'vue'
 
 export default {
