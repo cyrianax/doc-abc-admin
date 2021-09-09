@@ -1,6 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import commonRoutes from './route.common'
 import storage from '@/utils/storage'
+
+import commonRoutes from './route.common'
+import systemRoutes from './route.system'
+import contentRoutes from './route.content'
+
+const moduleRoutes = [
+  ...systemRoutes,
+  ...contentRoutes
+]
 
 const router = createRouter({
   history: createWebHashHistory(),
