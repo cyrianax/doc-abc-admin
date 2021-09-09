@@ -6,22 +6,31 @@
       </div>
       <div class="form">
         <p>administrator</p>
-        <input type="password" placeholder="请输入登录密码" v-model="state.password"/>
+        <input type="password" placeholder="请输入登录密码" v-model="state.password" @keyup.enter="handleLogin"/>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { reactive } from "vue"
+import { reactive } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
 
 const state = reactive({
   username: 'administrator',
   password: ''
 })
 
+const handleLogin = () => {
+  router.push('/')
+}
+
 defineExpose({
-  state
+  state,
+  handleLogin
 })
 </script>
 
