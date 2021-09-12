@@ -25,11 +25,13 @@ const publicList = [
   '/login',
 ]
 
-router.beforeEach(async to => {
-  const isPublicPath = publicList.indexOf(to.path) > -1
-  return storage.token
-    ? isPublicPath ? '/' : true
-    : isPublicPath ? true : `/login?redirect=${encodeURIComponent(to.path)}`
-})
+moduleRoutes.forEach(route => router.addRoute('main', route))
+
+// router.beforeEach(async to => {
+//   const isPublicPath = publicList.indexOf(to.path) > -1
+//   return storage.token
+//     ? isPublicPath ? '/' : true
+//     : isPublicPath ? true : `/login?redirect=${encodeURIComponent(to.path)}`
+// })
 
 export default router
