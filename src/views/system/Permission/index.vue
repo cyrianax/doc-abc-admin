@@ -24,18 +24,17 @@
     </app-block>
 
     <app-block title="权限信息">
-      <el-form ref="form" :model="state.editForm" label-width="80px">
-        <el-form-item label="权限名称">
-          <el-input v-model="state.editForm.name"></el-input>
+      <el-form ref="editFormRef" :model="state.editForm" :rules="state.rules" label-width="80px">
+        <el-form-item label="权限名称" prop="label">
+          <el-input v-model="state.editForm.label"></el-input>
         </el-form-item>
-        <el-form-item label="权限类型">
+        <el-form-item label="权限类型" prop="type">
           <el-select v-model="state.editForm.type" placeholder="请选择权限类型">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option v-for="option in state.typeOptions" :label="option" :value="option" :key="option"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限路径">
-          <el-input type="textarea" v-model="state.editForm.path"></el-input>
+        <el-form-item label="权限路径" prop="path">
+          <el-input v-model="state.editForm.path"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="handler.updatePermission">确 定</el-button>
@@ -44,18 +43,17 @@
     </app-block>
 
     <el-dialog title="新增权限" v-model="state.dlgVisible" append-to-body>
-      <el-form ref="form" :model="state.createForm" label-width="80px">
-        <el-form-item label="权限名称">
-          <el-input v-model="state.createForm.name"></el-input>
+      <el-form ref="createFormRef" :model="state.createForm" :rules="state.rules" label-width="80px">
+        <el-form-item label="权限名称" prop="label">
+          <el-input v-model="state.createForm.label"></el-input>
         </el-form-item>
-        <el-form-item label="权限类型">
+        <el-form-item label="权限类型" prop="type">
           <el-select v-model="state.createForm.type" placeholder="请选择权限类型">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
+            <el-option v-for="option in state.typeOptions" :label="option" :value="option" :key="option"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="权限路径">
-          <el-input type="textarea" v-model="state.createForm.path"></el-input>
+        <el-form-item label="权限路径" prop="path">
+          <el-input v-model="state.createForm.path"></el-input>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -68,21 +66,32 @@
 </template>
 
 <script setup>
-import { reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import model from './model'
+
+import validator from '@/utils/validator'
+
+const editFormRef = ref(null)
+const createFormRef = ref(null)
 
 const state = reactive({
   permissions: [],
   dlgVisible: false,
+  typeOptions: ['页面', '功能'],
   createForm: {
-    name: '',
+    label: '',
     type: '',
     path: ''
   },
   editForm: {
-    name: '',
+    label: '',
     type: '',
     path: ''
+  },
+  rules: {
+    label: [validator.required('请输入权限名称')],
+    type: [validator.required('请选择权限类型', 'change')],
+    path: [validator.required('请输入权限路径')],
   }
 })
 
@@ -94,8 +103,14 @@ const handler = {
     state.editForm = node
   },
   async createPermission () {
-    await model.createPermission(...state.createForm)
-    state.dlgVisible = false
+    createFormRef.value.validate(async valid => {
+      if (valid) {
+        await model.createPermission({
+          label: state.createForm.label
+        })
+        state.dlgVisible = false        
+      }
+    })
   },
   async updatePermission () {
 
@@ -103,10 +118,15 @@ const handler = {
 }
 
 onMounted(async () => {
-  state.permissions = await model.getPermissions()
+  // state.permissions = await model.getPermissions()
 })
 
-defineExpose({ state, handler })
+defineExpose({ 
+  state, 
+  handler,
+  editFormRef,
+  createFormRef 
+})
 </script>
 
 <style lang="scss" scoped>

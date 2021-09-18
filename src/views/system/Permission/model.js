@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export default {
   async getPermissions () {
     const result = await request({
-      url: ''
+      url: '/permission',
     })
 
     const fn = parent => {
@@ -13,8 +13,16 @@ export default {
         l.length && (item.children = l)
       })
       return list
-    },
+    }
 
     return fn()
+  },
+  createPermission (data) {
+    console.log(data);
+    return request({
+      url: '/permission',
+      method: 'post',
+      data
+    })
   }
 }
