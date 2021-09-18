@@ -3,21 +3,22 @@
 
     <app-block title="权限树">
       <template v-slot:control>
-        <el-button type="text" @click="handler.openDialog">新增权限</el-button>
+        <el-button type="text" @click="handler.openCreateDialog()">新增权限</el-button>
       </template>
       <el-tree
         default-expand-all 
-        :data="state.permissionTree" 
+        :expand-on-click-node="false"
+        :data="state.permissions" 
         :props="{ label: 'label', children: 'children' }" 
         @node-click="handler.clickTreeNode"
       >
         <template #default="{ node, data }">
           <div class="custom-tree-node">
             <span>{{ node.label }}</span>
-            <span>
-              <a @click="handler.append(data)"> 新增 </a>
-              <a @click="handler.remove(node, data)"> 删除 </a>
-            </span>
+            <div class="node-control">
+              <el-button type="text" @click="handler.openCreateDialog(data)" v-if="data.type === '页面'">新增</el-button>
+              <el-button type="text" @click="handler.removePermissions(data)">删除</el-button>
+            </div>
           </div>
         </template>
       </el-tree>
@@ -29,7 +30,7 @@
           <el-input v-model="state.editForm.label"></el-input>
         </el-form-item>
         <el-form-item label="权限类型" prop="type">
-          <el-select v-model="state.editForm.type" placeholder="请选择权限类型">
+          <el-select v-model="state.editForm.type" placeholder="请选择权限类型" :disabled="!!state.editForm.children || !state.editForm.parent">
             <el-option v-for="option in state.typeOptions" :label="option" :value="option" :key="option"/>
           </el-select>
         </el-form-item>
@@ -48,7 +49,7 @@
           <el-input v-model="state.createForm.label"></el-input>
         </el-form-item>
         <el-form-item label="权限类型" prop="type">
-          <el-select v-model="state.createForm.type" placeholder="请选择权限类型">
+          <el-select v-model="state.createForm.type" placeholder="请选择权限类型" :disabled="!state.createForm.parent">
             <el-option v-for="option in state.typeOptions" :label="option" :value="option" :key="option"/>
           </el-select>
         </el-form-item>
@@ -66,10 +67,9 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue'
-import model from './model'
-
+import { ref, reactive, onMounted, nextTick } from 'vue'
 import validator from '@/utils/validator'
+import model from './model'
 
 const editFormRef = ref(null)
 const createFormRef = ref(null)
@@ -78,16 +78,8 @@ const state = reactive({
   permissions: [],
   dlgVisible: false,
   typeOptions: ['页面', '功能'],
-  createForm: {
-    label: '',
-    type: '',
-    path: ''
-  },
-  editForm: {
-    label: '',
-    type: '',
-    path: ''
-  },
+  createForm: {},
+  editForm: {},
   rules: {
     label: [validator.required('请输入权限名称')],
     type: [validator.required('请选择权限类型', 'change')],
@@ -96,29 +88,45 @@ const state = reactive({
 })
 
 const handler = {
-  openDialog () {
+  async openCreateDialog (parent = {}) {
     state.dlgVisible = true
+
+    await nextTick()
+    createFormRef.value.resetFields()
+
+    state.createForm.parent = parent._id
+    state.createForm.type = parent.type || '页面' 
   },
   clickTreeNode (node) {
-    state.editForm = node
+    editFormRef.value.resetFields()
+    state.editForm = { ...node }
   },
   async createPermission () {
     createFormRef.value.validate(async valid => {
       if (valid) {
-        await model.createPermission({
-          label: state.createForm.label
-        })
+        await model.createPermission(state.createForm)
+        state.permissions = await model.getPermissions()
         state.dlgVisible = false        
       }
     })
   },
   async updatePermission () {
-
+    editFormRef.value.validate(async valid => {
+      if (valid) {
+        await model.updatePermission(state.editForm)
+        state.permissions = await model.getPermissions()
+      }
+    })
+  },
+  async removePermissions (node) {
+    await model.removePermissions(node)
   }
+  
 }
 
 onMounted(async () => {
-  // state.permissions = await model.getPermissions()
+  state.permissions = await model.getPermissions()
+  state.editForm = { ...state.permissions[0] }
 })
 
 defineExpose({ 
@@ -130,7 +138,21 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-.page-layout {
+.custom-tree-node {
+  width: 100%;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 32px;
+
+  .node-control {
+    // display: none;
+  }
+
+  &:hover {
+    .node-control {
+      // display: flex;
+    }
+  }
 }
 </style>
