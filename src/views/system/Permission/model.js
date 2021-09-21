@@ -35,13 +35,11 @@ export default {
       }, [permission._id])
     }
 
-    const ids = fn(permission)
-
     return request({
       url: '/permission',
       method: 'delete',
       data: { 
-        ids
+        ids: fn(permission)
       }
     })
   }

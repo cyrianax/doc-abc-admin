@@ -1,5 +1,7 @@
 <template>
-  
+  <app-view>
+    
+  </app-view>
 </template>
 
 <script setup>

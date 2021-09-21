@@ -120,6 +120,7 @@ const handler = {
   },
   async removePermissions (node) {
     await model.removePermissions(node)
+    state.permissions = await model.getPermissions()
   }
   
 }
