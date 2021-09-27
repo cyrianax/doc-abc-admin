@@ -13,7 +13,7 @@
           </div>
           <div v-if="role.type !== 'system'">
             <span @click="handler.openFormDialog(role)">修改</span>
-            <span @click="handler.remove(role)">删除</span>
+            <span @click="handler.removeRole(role._id)">删除</span>
           </div>
         </div>
       </div>
@@ -60,7 +60,7 @@ const handler = {
     state.dlgVisible = true
     await nextTick()
     roleFormRef.value.resetFields()
-    state.roleForm = role || {}
+    state.roleForm = role ? { ...role } : {}
   },
   clickRole (role) {
     state.currentRole = { ...role }
@@ -70,6 +70,7 @@ const handler = {
       if (valid) {
         await model.saveRole(state.roleForm)
         state.roles = await model.getRoles()
+        handler.setCurrentRole()
         state.dlgVisible = false        
       }
     })
@@ -82,16 +83,19 @@ const handler = {
       }
     })
   },
-  async removeRole (role) {
-    await model.removeRole(role)
+  async removeRole (_id) {
+    await model.removeRole(_id)
     state.roles = await model.getRoles()
+    handler.setCurrentRole()
+  },
+  setCurrentRole () {
+    state.currentRole = state.roles[0] ? { ...state.roles[0] } : {}
   }
-  
 }
 
 onMounted(async () => {
   state.roles = await model.getRoles()
-  state.currentRole = { ...state.roles[0] }
+  handler.setCurrentRole()
 })
 
 defineExpose({ 

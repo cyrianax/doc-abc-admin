@@ -17,20 +17,9 @@ export default {
     method: 'put',
     data
   }),
-  removePermissions: permission => {
-    const fn = permission => {
-      permission.children = permission.children || []
-      return permission.children.reduce((list, item) => {
-        return list.concat(fn(item))
-      }, [permission._id])
-    }
-
-    return request({
-      url: '/permission',
-      method: 'delete',
-      data: { 
-        ids: fn(permission)
-      }
-    })
-  }
+  removeRole: _id => request({
+    url: '/role',
+    method: 'delete',
+    data: { _id }
+  })
 }
