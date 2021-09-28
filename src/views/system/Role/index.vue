@@ -29,7 +29,6 @@
           check-on-click-node
           default-expand-all 
           node-key="_id"
-          :default-checked-keys="state.currentRole.permissions"
           :expand-on-click-node="false"
           :data="state.permissions" 
           :props="{ label: 'label', children: 'children' }" 
@@ -83,7 +82,7 @@ const handler = {
   },
   clickRole (role) {
     state.currentRole = { ...role }
-    console.log(state.currentRole);
+    permissionTreeRef.value.setCheckedKeys(state.currentRole.permissions)
   },
   async saveRole () {
     roleFormRef.value.validate(async valid => {
@@ -102,6 +101,7 @@ const handler = {
   },
   setCurrentRole () {
     state.currentRole = state.roles[0] ? { ...state.roles[0] } : {}
+    permissionTreeRef.value.setCheckedKeys(state.currentRole.permissions)
   },
   async checkTreeNode (data) {
     const setParent = data => {
