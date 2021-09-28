@@ -23,7 +23,6 @@ const props = defineProps({
 })
 
 const route = useRoute()
-console.log(route);
 
 defineExpose({
 

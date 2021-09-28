@@ -21,6 +21,23 @@
 
     <app-block title="角色信息">
       <div class="role-title">{{state.currentRole.name}}</div>
+      <div>
+        <el-tree
+          ref="permissionTreeRef"
+          show-checkbox
+          check-strictly
+          check-on-click-node
+          default-expand-all 
+          node-key="_id"
+          :default-checked-keys="state.currentRole.permissions"
+          :expand-on-click-node="false"
+          :data="state.permissions" 
+          :props="{ label: 'label', children: 'children' }" 
+          @check="handler.checkTreeNode"
+        >
+          
+        </el-tree>
+      </div>
     </app-block>
 
     <el-dialog title="新增角色" v-model="state.dlgVisible" append-to-body>
@@ -44,9 +61,11 @@ import validator from '@/utils/validator'
 import model from './model'
 
 const roleFormRef = ref(null)
+const permissionTreeRef = ref(null)
 
 const state = reactive({
   roles: [],
+  permissions: [],
   dlgVisible: false,
   roleForm: {},
   currentRole: {},
@@ -64,6 +83,7 @@ const handler = {
   },
   clickRole (role) {
     state.currentRole = { ...role }
+    console.log(state.currentRole);
   },
   async saveRole () {
     roleFormRef.value.validate(async valid => {
@@ -75,14 +95,6 @@ const handler = {
       }
     })
   },
-  async updatePermission () {
-    editFormRef.value.validate(async valid => {
-      if (valid) {
-        await model.updatePermission(state.editForm)
-        state.roles = await model.getRoles()
-      }
-    })
-  },
   async removeRole (_id) {
     await model.removeRole(_id)
     state.roles = await model.getRoles()
@@ -90,10 +102,36 @@ const handler = {
   },
   setCurrentRole () {
     state.currentRole = state.roles[0] ? { ...state.roles[0] } : {}
-  }
+  },
+  async checkTreeNode (data) {
+    const setParent = data => {
+      if (data.parent) {
+        permissionTreeRef.value.setChecked(data.parent, true)
+        const parentNode = permissionTreeRef.value.getNode(data.parent)
+        setParent(parentNode.data)
+      }
+    }
+    const setChildren = (data) => {
+      data.children && data.children.forEach(child => {
+        permissionTreeRef.value.setChecked(child._id, false)
+        setChildren(child)
+      })
+    }
+
+    const node = permissionTreeRef.value.getNode(data._id)
+    node.checked ? setParent(data) : setChildren(data)
+
+    const permissions = permissionTreeRef.value.getCheckedKeys()
+    await model.updateRolePermission({
+      _id: state.currentRole._id,
+      permissions
+    })
+    state.roles = await model.getRoles()
+  },
 }
 
 onMounted(async () => {
+  state.permissions = await model.getPermissions()
   state.roles = await model.getRoles()
   handler.setCurrentRole()
 })
@@ -102,6 +140,7 @@ defineExpose({
   state, 
   handler,
   roleFormRef,
+  permissionTreeRef
 })
 </script>
 
