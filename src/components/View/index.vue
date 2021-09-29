@@ -40,6 +40,8 @@ defineExpose({
   >.app-view-control {
     margin-bottom: 8px;
     height: 24px;
+    display: flex;
+    justify-content: space-between;
   }
 
   >.app-view-container {
