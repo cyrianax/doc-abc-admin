@@ -1,13 +1,7 @@
 <template>
   <div class="layout">
     <div class="layout-side">
-      <div class="site-logo">
-        <span>My</span><span>API</span>
-      </div>
-      <Nav/>
-      <div class="user">
-        <app-icon name="dashboard"/>
-      </div>
+      <Side/>
     </div>
     <div class="layout-main">
       <div class="layout-top">
@@ -21,51 +15,20 @@
 </template>
 
 <script setup>
-import Nav from './components/Nav.vue'
+import Side from './components/Side.vue'
 defineExpose({
 })
 </script>
 
 <style lang="scss" scoped>
-@font-face {
-  font-family: generica;
-  src: url('@/assets/fonts/generica/Generica.otf');
-}
-
-@font-face {
-  font-family: generica-bold;
-  src: url('@/assets/fonts/generica/Generica Bold.otf');
-}
-
 .layout {
   display: flex;
   height: 100%;
+  align-items: stretch;
   .layout-side {
-    display: flex;
-    flex-direction: column;
-    width: 80px;
-    background: #0e0e0e;
-    color: #fff;
-
-
-    .site-logo {
-      font-size: 18px;
-      color: #fff;
-      height: 72px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      >span {
-        &:first-child {
-          font-family: generica;
-        }
-        &:last-child {
-          font-family: generica-bold;
-        }
-      }
-    }
-
+    background: #fff;
+    width: 56px;
+    border-right: 1px solid $border;
   }
   .layout-main {
     flex: auto;
@@ -73,8 +36,9 @@ defineExpose({
     flex-direction: column;
 
     .layout-top {
-      height: 48px;
+      height: 40px;
       background: #fff;
+      border-bottom: 1px solid $border;
     }
 
     .layout-container {

@@ -7,7 +7,7 @@
       <div class="form" v-if="state.switchUser" @keyup.enter="handler.setEmail">
         <input placeholder="请输入登录邮箱" v-model="state.email"/>
       </div>
-      <div class="form" v-else @keyup.enter="handleLogin">
+      <div class="form" v-else @keyup.enter="handler.login">
         <div class="form-label">
           <app-icon name="user-circle" class="form-icon" @click="handler.switchEmail"/>
           <p>{{state.email}}</p>
@@ -41,8 +41,17 @@ const handler = {
     state.email = ''
     state.switchUser = true
   },
-  login: () => {
-    router.push('/')
+  async login () {
+    const result = await model.login({
+      email: state.email,
+      password: state.password,
+    })
+    if (result) {
+      storage.lastLogin = state.email
+      storage.token = result.token
+      storage.user = result
+      router.push('/')
+    }
   }
 }
 defineExpose({

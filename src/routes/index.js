@@ -13,10 +13,6 @@ const moduleRoutes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    {
-      path: '/',
-      redirect: '',
-    },
     ...commonRoutes,
   ]
 })

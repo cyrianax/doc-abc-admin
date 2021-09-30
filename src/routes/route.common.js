@@ -2,7 +2,14 @@ export default [
   {
     name: 'main',
     path: '/',
-    component: () => import('@/views/common/Layout/index.vue')
+    redirect: '/dashboard',
+    component: () => import('@/views/common/Layout/index.vue'),
+    children: [
+      {
+        path: '/dashboard',
+        component: () => import('@/views/common/Dashboard/index.vue'),
+      }
+    ]
   },
   {
     path: '/login',
