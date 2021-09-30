@@ -27,7 +27,7 @@ defineExpose({
   align-items: stretch;
   .layout-side {
     background: #fff;
-    width: 56px;
+    width: 48px;
     border-right: 1px solid $border;
   }
   .layout-main {
