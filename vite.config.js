@@ -14,8 +14,8 @@ export default defineConfig({
     vue(),
     jsx(),
     icon({
-      iconDirs: [path.resolve(process.cwd(), '/src/assets/icons')],
-      symbolId: 'icon-[name]',
+      iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+      symbolId: 'icon-[dir]-[name]',
     })
   ],
   css: {

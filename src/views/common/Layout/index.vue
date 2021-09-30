@@ -6,7 +6,7 @@
       </div>
       <Nav/>
       <div class="user">
-        <app-icon name="user"/>
+        <app-icon name="dashboard"/>
       </div>
     </div>
     <div class="layout-main">

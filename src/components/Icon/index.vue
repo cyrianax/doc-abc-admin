@@ -1,34 +1,24 @@
 <template>
-  <svg :class="svgClass" class="svg-icon" aria-hidden="true">
+  <svg :class="svgClass" class="app-icon" aria-hidden="true">
     <use :xlink:href="symbolId" />
   </svg>
 </template>
 
-<script>
+<script setup>
 import { computed } from 'vue'
 
-export default {
-  name: 'SvgIcon',
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    className: {
-      type: String,
-      default: ''
-    }
-  },
-  setup (props) {
-    const symbolId = computed(() => `#icon-${props.name}`)
-    const svgClass = computed(() => props.className || '')
-    return { symbolId, svgClass }
-  },
-}
+const props = defineProps({
+  name: {
+    type: String,
+    required: true,
+  }
+})
+
+const symbolId = computed(() => `#icon-${props.name}`)
 </script>
 
-<style >
-.svg-icon {
+<style>
+.app-icon {
   display: inline-block;
   width: 1em;
   height: 1em;
