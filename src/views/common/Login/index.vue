@@ -4,9 +4,15 @@
       <div class="logo">
         <span>My</span><span>API</span>
       </div>
-      <div class="form">
-        <p>administrator</p>
-        <input type="password" placeholder="请输入登录密码" v-model="state.password" @keyup.enter="handleLogin"/>
+      <div class="form" v-if="state.switchUser" @keyup.enter="handler.setEmail">
+        <input placeholder="请输入登录邮箱" v-model="state.email"/>
+      </div>
+      <div class="form" v-else @keyup.enter="handleLogin">
+        <div class="form-label">
+          <app-icon name="user-circle" class="form-icon" @click="handler.switchEmail"/>
+          <p>{{state.email}}</p>
+        </div>
+        <input type="password" placeholder="请输入登录密码" v-model="state.password"/>
       </div>
     </div>
   </div>
@@ -15,22 +21,33 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import storage from '@/utils/storage'
+import model from './model'
 
 const router = useRouter()
 const route = useRoute()
 
 const state = reactive({
-  username: 'administrator',
+  switchUser: !storage.lastLogin,
+  email: storage.lastLogin,
   password: ''
 })
 
-const handleLogin = () => {
-  router.push('/')
+const handler = {
+  setEmail () {
+    state.switchUser = !state.email
+  },
+  switchEmail () {
+    state.email = ''
+    state.switchUser = true
+  },
+  login: () => {
+    router.push('/')
+  }
 }
-
 defineExpose({
   state,
-  handleLogin
+  handler
 })
 </script>
 
@@ -83,10 +100,29 @@ defineExpose({
     }
 
     .form {
-      >p {
-        color: #fff;
-        font-size: 14px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+
+      .form-label {
+        display: flex;
+        
+        align-items: center;
         margin-bottom: 8px;
+
+        .form-icon {
+          margin-right: 8px;
+          fill: rgba(255,255,255,0.7);
+          font-size: 20px;
+          cursor: pointer;
+          &:hover {
+            fill: rgba(255,255,255,0.9);
+          }
+        }
+        p {
+          color: rgba(255,255,255,0.5);
+          font-size: 14px;
+        }
       }
 
       >input {
