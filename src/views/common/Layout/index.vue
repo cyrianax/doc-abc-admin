@@ -1,11 +1,11 @@
 <template>
   <div class="layout">
     <div class="layout-side">
-      <Side/>
+      <Side :modules="state.modules" @click="handler.selectModule"/>
     </div>
     <div class="layout-main">
-      <div class="layout-top">
-        bbb
+      <div class="layout-top" v-if="state.moduleMenu.length">
+        <Module :name="state.module.name" :menu="state.module.menu"/>
       </div>
       <div class="layout-container">
         <router-view/>
@@ -16,7 +16,30 @@
 
 <script setup>
 import Side from './components/Side.vue'
+import ModuleMenu from './components/ModuleMenu.vue'
+
+import { reactive } from 'vue'
+import menu from './menu'
+import storage from '@/utils/storage'
+
+const setUserModules = () => menu.filter(module => {
+  return storage.user.permissions.find(permission => permission.path === module.path) || module.public
+})
+
+const state = reactive({
+  modules: setUserModules(),
+  moduleMenu: []
+})
+
+const handler = {
+  selectModule (module) {
+    state.moduleMenu = module.children
+  }
+}
+
 defineExpose({
+  state,
+  handler
 })
 </script>
 
@@ -26,9 +49,10 @@ defineExpose({
   height: 100%;
   align-items: stretch;
   .layout-side {
-    background: #fff;
+    background: $primary;
     width: 48px;
-    border-right: 1px solid $border;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(0, 0, 0, 0.03);
   }
   .layout-main {
     flex: auto;

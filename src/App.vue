@@ -2,7 +2,7 @@
   <router-view/>
 </template>
 
-<style>
+<style lang="scss" >
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -13,6 +13,7 @@
 html,
 body {
   height: 100%;
+  color: $text;
 }
 
 * {
