@@ -1,11 +1,11 @@
 <template>
   <div class="layout">
     <div class="layout-side">
-      <Side :modules="state.modules" @click="handler.selectModule"/>
+      <Side @select="handler.selectModule"/>
     </div>
     <div class="layout-main">
-      <div class="layout-top" v-if="state.moduleMenu.length">
-        <Module :name="state.module.name" :menu="state.module.menu"/>
+      <div class="layout-top" v-if="state.module.children.length">
+        <ModuleTitle :name="state.module.name" :menu="state.module.children"/>
       </div>
       <div class="layout-container">
         <router-view/>
@@ -16,24 +16,24 @@
 
 <script setup>
 import Side from './components/Side.vue'
-import ModuleMenu from './components/ModuleMenu.vue'
+import ModuleTitle from './components/ModuleTitle.vue'
 
 import { reactive } from 'vue'
-import menu from './menu'
-import storage from '@/utils/storage'
+import { useRouter } from 'vue-router'
 
-const setUserModules = () => menu.filter(module => {
-  return storage.user.permissions.find(permission => permission.path === module.path) || module.public
-})
+const router = useRouter()
 
 const state = reactive({
-  modules: setUserModules(),
-  moduleMenu: []
+  module: {
+    name: '',
+    children: []
+  }
 })
 
 const handler = {
   selectModule (module) {
-    state.moduleMenu = module.children
+    state.module = module
+    router.push(module.path)
   }
 }
 

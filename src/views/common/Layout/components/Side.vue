@@ -10,15 +10,16 @@
           <img src="~@/assets/images/avatar.png" alt="" srcset="" @click="state.userMenu.visible = true">
         </template>
       </el-popover>
-      
     </div>
-    <div class="side-middle">
-      <div class="nav-module" v-for="module in props.modules" :key="module.icon">
+    <div class="side-middle side-modules">
+      <div class="nav-module" v-for="module in state.navModules" :key="module.icon" @click="handler.selectModule(module)">
         <app-icon :name="module.icon" class="nav-icon"/>
       </div>
     </div>
-    <div class="side-bottom">
-      <app-icon name="nav-setting"/>
+    <div class="side-bottom side-modules">
+      <div class="nav-module" v-for="module in state.bottomModules" :key="module.icon" @click="handler.selectModule(module)">
+        <app-icon :name="module.icon" class="nav-icon"/>
+      </div>
     </div>
   </div>
   
@@ -27,22 +28,35 @@
 <script setup>
 import { reactive } from 'vue'
 
-const props = defineProps({
-  modules: {
-    type: Array,
-    required: true,
-  }
+import menu from '../menu'
+import storage from '@/utils/storage'
+
+const emit = defineEmits(['select'])
+
+const setUserModules = () => menu.filter(module => {
+  return storage.user.permissions.find(permission => permission.path === module.path) || module.public
 })
 
+const navModules = setUserModules().filter(module => module.path !== '/system')
+const bottomModules = setUserModules().filter(module => module.path === '/system')
+
 const state = reactive({
+  navModules,
+  bottomModules,
   userMenu: {
     visible: false
   },
 })
 
+const handler = {
+  selectModule (module) {
+    emit('select', module)
+  }
+}
+
 defineExpose({
-  props,
-  state
+  state,
+  handler
 })
 </script>
 
@@ -63,11 +77,9 @@ defineExpose({
     }
   }
 
-  >.side-middle {
-    flex: auto;
+  >.side-modules {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
 
     .nav-module {
@@ -97,14 +109,13 @@ defineExpose({
 
   }
 
+  >.side-middle {
+    flex: auto;
+    justify-content: center;
+  }
+
   >.side-bottom {
-    text-align: center;
-    padding: 8px 0;
-    cursor: pointer;
-    font-size: 20px;
-    .app-icon {
-      fill: #fff;
-    }
+    justify-content: flex-end;
   }
 
 }

@@ -5,6 +5,7 @@ export default [
     public: true
   },
   {
+    name: '文档管理',
     icon: 'nav-content',
     path: '/content',
     children: [
@@ -30,4 +31,23 @@ export default [
     icon: 'nav-server',
     path: '/server'
   },
+  {
+    name: '系统管理',
+    icon: 'nav-setting',
+    path: '/system',
+    children: [
+      {
+        label: '用户',
+        path: '/system/user'
+      },
+      {
+        label: '角色',
+        path: '/system/role'
+      },
+      {
+        label: '权限',
+        path: '/system/permission'
+      },
+    ]
+  }
 ]

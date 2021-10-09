@@ -24,6 +24,8 @@ import { useRouter, useRoute } from 'vue-router'
 import storage from '@/utils/storage'
 import model from './model'
 
+import { addUserRoutes } from '@/routes'
+
 const router = useRouter()
 const route = useRoute()
 
@@ -50,6 +52,8 @@ const handler = {
       storage.lastLogin = state.email
       storage.token = result.token
       storage.user = result
+
+      addUserRoutes()
       router.push('/')
     }
   }
