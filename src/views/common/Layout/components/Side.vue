@@ -4,7 +4,7 @@
       <el-popover v-model:visible="state.userMenu.visible" placement="bottom-start" :width="160">
         <div>
           <div>用户中心</div>
-          <div>退出系统</div>
+          <div @click="handler.logout">退出系统</div>
         </div>
         <template #reference>
           <img src="~@/assets/images/avatar.png" alt="" srcset="" @click="state.userMenu.visible = true">
@@ -12,37 +12,36 @@
       </el-popover>
     </div>
     <div class="side-middle side-modules">
-      <div class="nav-module" v-for="module in state.navModules" :key="module.icon" @click="handler.selectModule(module)">
+      <div class="nav-module" :class="{ 'active': state.currentModule.path === module.path }" v-for="module in state.navModules" :key="module.icon" @click="handler.selectModule(module)">
         <app-icon :name="module.icon" class="nav-icon"/>
       </div>
     </div>
     <div class="side-bottom side-modules">
-      <div class="nav-module" v-for="module in state.bottomModules" :key="module.icon" @click="handler.selectModule(module)">
+      <div class="nav-module" :class="{ 'active': state.currentModule.path === module.path }" v-for="module in state.bottomModules" :key="module.icon" @click="handler.selectModule(module)">
         <app-icon :name="module.icon" class="nav-icon"/>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script setup>
-import { reactive } from 'vue'
-
-import menu from '../menu'
+import { reactive, inject } from 'vue'
+import { useRouter } from 'vue-router'
+import { removeUserRoutes } from '@/routes'
 import storage from '@/utils/storage'
 
+const router = useRouter()
 const emit = defineEmits(['select'])
 
-const setUserModules = () => menu.filter(module => {
-  return storage.user.permissions.find(permission => permission.path === module.path) || module.public
-})
-
-const navModules = setUserModules().filter(module => module.path !== '/system')
-const bottomModules = setUserModules().filter(module => module.path === '/system')
+const userModules = inject('userModules', [])
+const currentModule = inject('currentModule', {})
+const navModules = userModules.filter(module => module.path !== '/system')
+const bottomModules = userModules.filter(module => module.path === '/system')
 
 const state = reactive({
   navModules,
   bottomModules,
+  currentModule,
   userMenu: {
     visible: false
   },
@@ -50,7 +49,14 @@ const state = reactive({
 
 const handler = {
   selectModule (module) {
+    state.currentModule = module
     emit('select', module)
+  },
+  logout () {
+    removeUserRoutes()
+    delete storage.user
+    delete storage.token
+    router.push('/login')
   }
 }
 
@@ -95,6 +101,14 @@ defineExpose({
       color: #fff;
       
       &:hover {
+        background: #fff;
+
+        .nav-icon {
+          fill: $primary;
+        }
+      }
+
+      &.active {
         background: #fff;
 
         .nav-icon {

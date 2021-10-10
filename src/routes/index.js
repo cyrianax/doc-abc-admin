@@ -17,6 +17,19 @@ const router = createRouter({
   ]
 })
 
+const publicList = [
+  '/login',
+]
+
+router.beforeEach(async to => {
+  const isPublicPath = publicList.indexOf(to.path) > -1
+  return storage.token
+    ? isPublicPath ? '/' : true
+    : isPublicPath ? true : `/login?redirect=${encodeURIComponent(to.path)}`
+})
+
+export default router
+
 const getUserRouteConfig = () => {
   const permissions = storage.user ? storage.user.permissions.filter(permission => permission.type === '页面') : []
   const eachPermissions = parent => {
@@ -37,10 +50,14 @@ export const addUserRoutes = () => {
       const findResult = dynamicRoutes.find(route => route.path === config.path)
 
       const route = findResult
-        ? findResult
+        ? {
+          name: findResult.path,
+          ...findResult
+        }
         : {
+          name: config.path,
           path: config.path,
-          redirect: config.children[0].path
+          redirect: config.children ? config.children[0].path : undefined
         }
 
       router.addRoute('main', route)
@@ -50,17 +67,15 @@ export const addUserRoutes = () => {
   eachRouteConfig(userRouteConfig)
 }
 
+export const removeUserRoutes = () => {
+  const userRouteConfig = getUserRouteConfig()
+  const eachRouteConfig = routes => {
+    routes.forEach(config => {
+      router.removeRoute(config.path)
+      config.children && eachRouteConfig(config.children)
+    })
+  }
+  eachRouteConfig(userRouteConfig)
+}
+
 addUserRoutes()
-
-const publicList = [
-  '/login',
-]
-
-router.beforeEach(async to => {
-  const isPublicPath = publicList.indexOf(to.path) > -1
-  return storage.token
-    ? isPublicPath ? '/' : true
-    : isPublicPath ? true : `/login?redirect=${encodeURIComponent(to.path)}`
-})
-
-export default router

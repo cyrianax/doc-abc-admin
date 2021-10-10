@@ -4,7 +4,7 @@
       <Side @select="handler.selectModule"/>
     </div>
     <div class="layout-main">
-      <div class="layout-top" v-if="state.module.children.length">
+      <div class="layout-top" v-if="state.module.children && state.module.children.length">
         <ModuleTitle :name="state.module.name" :menu="state.module.children"/>
       </div>
       <div class="layout-container">
@@ -18,13 +18,18 @@
 import Side from './components/Side.vue'
 import ModuleTitle from './components/ModuleTitle.vue'
 
-import { reactive } from 'vue'
+import { reactive, provide } from 'vue'
 import { useRouter } from 'vue-router'
+import { useModule } from './use.module'
 
 const router = useRouter()
+const [userModules, currentModule] = useModule()
+
+provide('userModules', userModules)
+provide('currentModule', currentModule)
 
 const state = reactive({
-  module: {
+  module: currentModule || {
     name: '',
     children: []
   }
