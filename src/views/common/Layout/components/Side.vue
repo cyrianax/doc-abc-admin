@@ -75,9 +75,9 @@ defineExpose({
   >.side-top {
     display: flex;
     justify-content: center;
-    padding: 8px 0;
+    padding: 6px 0;
     img {
-      width: 32px;
+      width: 28px;
       border-radius: 100%;
       cursor: pointer;
     }
@@ -92,32 +92,34 @@ defineExpose({
       border-radius: 12px;
       font-size: 20px;
       cursor: pointer;
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       display: flex;
       justify-content: center;
       align-items: center;
       margin-bottom: 12px;
-      color: #fff;
       
       &:hover {
-        background: #fff;
+        background: rgba($color: #000, $alpha: 0.3);
 
         .nav-icon {
           fill: $primary;
+          // fill: #ee786b
         }
       }
 
       &.active {
-        background: #fff;
+        background: rgba($color: #fff, $alpha: 0.07);
+        // background: #ee786b;
 
         .nav-icon {
           fill: $primary;
+          // fill: #fff;
         }
       }
 
       .nav-icon {
-        fill: rgba(255, 255, 255, 1);
+        fill: rgba(255, 255, 255, 0.4);
       }
     }
 

@@ -1,5 +1,3 @@
-import '@/assets/styles/global.scss'
-
 import { createApp } from 'vue'
 import router from './routes'
 import component from './components'

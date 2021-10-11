@@ -1,10 +1,12 @@
 <template>
   <app-view>
     <template #control>
-      <el-button @click="handler.removeUser()">删除</el-button>
-      <el-button type="primary" @click="handler.openFormDialog()">创建</el-button>
+      <el-button-group>
+        <el-button @click="handler.removeUser()">删除</el-button>
+        <el-button type="primary" @click="handler.openFormDialog()">创建</el-button>
+      </el-button-group>
     </template>
-    <el-table :data="state.users" border fit stripe highlight-current-row @selection-change="handler.changeSelection">
+    <el-table :data="state.users" border fit stripe highlight-current-row @selection-change="handler.changeSelection" size="mini">
       <el-table-column type="selection" align="center" />
       <el-table-column width="240px" label="邮箱" prop="email" align="center" show-overflow-tooltip />
       <el-table-column width="240px" label="昵称" prop="nickname" align="center" show-overflow-tooltip />

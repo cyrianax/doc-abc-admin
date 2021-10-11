@@ -54,10 +54,9 @@ defineExpose({
   height: 100%;
   align-items: stretch;
   .layout-side {
-    background: $primary;
-    width: 48px;
+    background: $secondary;
+    width: 40px;
     flex-shrink: 0;
-    border-right: 1px solid rgba(0, 0, 0, 0.03);
   }
   .layout-main {
     flex: auto;

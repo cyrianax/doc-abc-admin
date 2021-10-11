@@ -32,14 +32,12 @@ defineExpose({
 
 <style lang="scss" scoped>
 .app-view {
-  padding: 16px;
   height: 100%;
   display: flex;
   flex-direction: column;
 
   >.app-view-control {
-    margin-bottom: 8px;
-    height: 24px;
+    padding: 8px;
     display: flex;
     justify-content: space-between;
   }

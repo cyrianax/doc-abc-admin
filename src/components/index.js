@@ -1,10 +1,15 @@
 import 'virtual:svg-icons-register'
-import 'element-plus/dist/index.css'
+// import 'element-plus/dist/index.css'
+
+import '@/assets/theme/element-plus-green/index.css'
+import '@/assets/styles/element.scss'
+
 import {
   ElTable,
   ElTableColumn,
   ElTree,
   ElButton,
+  ElButtonGroup,
   ElDialog,
   ElForm,
   ElFormItem,
@@ -17,6 +22,7 @@ import {
 import Icon from './Icon/index.vue'
 import View from './View/index.vue'
 import Block from './Block/index.vue'
+
 
 export default {
   install (app) {
@@ -31,6 +37,7 @@ export default {
       ElTableColumn,
       ElTree,
       ElButton,
+      ElButtonGroup,
       ElDialog,
       ElForm,
       ElFormItem,
