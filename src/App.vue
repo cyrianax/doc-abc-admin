@@ -23,4 +23,8 @@ body {
   padding: 0;
   user-select: none;
 }
+
+ul {
+  list-style: none;
+}
 </style>

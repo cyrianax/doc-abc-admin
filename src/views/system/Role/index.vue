@@ -1,7 +1,7 @@
 <template>
   <app-view horiziontal>
 
-    <app-block title="角色">
+    <app-block title="角色" width="40%">
       <template v-slot:control>
         <el-button type="text" @click="handler.openFormDialog()">新增角色</el-button>
       </template>

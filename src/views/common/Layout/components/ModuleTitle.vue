@@ -84,6 +84,7 @@ defineExpose({
       padding: 0 16px;
       font-size: 14px;
       position: relative;
+      cursor: pointer;
 
       &.active {
         &::after {

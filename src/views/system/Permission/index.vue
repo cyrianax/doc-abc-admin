@@ -1,7 +1,7 @@
 <template>
   <app-view horiziontal>
 
-    <app-block title="权限树">
+    <app-block title="权限树" width="40%">
       <template v-slot:control>
         <el-button type="text" @click="handler.openCreateDialog()">新增权限</el-button>
       </template>

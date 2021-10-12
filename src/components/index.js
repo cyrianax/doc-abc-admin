@@ -22,6 +22,7 @@ import {
 import Icon from './Icon/index.vue'
 import View from './View/index.vue'
 import Block from './Block/index.vue'
+import List from './List/index.vue'
 
 
 export default {
@@ -29,6 +30,7 @@ export default {
     app.component('app-icon', Icon)
     app.component('app-view', View)
     app.component('app-block', Block)
+    app.component('app-list', List)
 
     app.config.globalProperties.$ELEMENT = { size: 'mini', zIndex: 3000 }
 

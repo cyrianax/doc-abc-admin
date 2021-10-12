@@ -71,7 +71,7 @@ defineExpose({
 
     .layout-container {
       flex: auto;
-      background: #f5f7fb;
+      background: $bg-gray;
     }
   }
 }

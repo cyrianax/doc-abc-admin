@@ -17,6 +17,10 @@ const menu = [
         path: '/content/document'
       },
       {
+        label: '类型',
+        path: '/content/type'
+      },
+      {
         label: '标签',
         path: '/content/tag'
       },

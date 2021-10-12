@@ -1,5 +1,5 @@
 <template>
-  <div class="app-block" :class="{ 'app-block-solid': solid }">
+  <div class="app-block" :class="{ 'app-block-solid': solid }" :style="{ width: width, flex: width ? `0 1 ${width}` : 'auto' }">
     <div class="app-block-title" v-if="title">
       <label>{{title}}</label>
       <slot name="control"></slot>
@@ -13,7 +13,8 @@
 <script setup>
 defineProps({
   solid: Boolean,
-  title: String
+  title: String,
+  width: String
 })
 </script>
 
@@ -28,7 +29,8 @@ defineProps({
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $border;
+    background: $bg-gray;
   }
 
   >.app-block-container {
