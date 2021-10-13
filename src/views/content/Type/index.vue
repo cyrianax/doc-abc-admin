@@ -23,9 +23,10 @@
       </template>
       <el-table :data="state.currentType.fields" stripe highlight-current-row @selection-change="handler.changeSelection">
       <el-table-column type="selection" align="center" />
-      <el-table-column width="240px" label="邮箱" prop="email" align="center" show-overflow-tooltip />
-      <el-table-column width="240px" label="昵称" prop="nickname" align="center" show-overflow-tooltip />
-      <el-table-column width="180px" label="手机" prop="phone" align="center" show-overflow-tooltip />
+      <el-table-column width="120px" label="名称" prop="name" align="left" show-overflow-tooltip />
+      <el-table-column width="120px" label="标识" prop="label" align="left" show-overflow-tooltip />
+      <el-table-column width="120px" label="类型" prop="type" align="left" show-overflow-tooltip />
+      <el-table-column width="120px" label="类型" prop="type" align="left" show-overflow-tooltip />
       <el-table-column label="角色" prop="roleText" align="center" show-overflow-tooltip />
       <el-table-column width="160px" label="操作" align="center">
         <template #default="scope">
