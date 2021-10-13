@@ -30,9 +30,6 @@ const handler = {
     font-size: 12px;
     cursor: pointer;
 
-    &:hover {
-      background: $bg-gray;
-    }
   }
 }
 </style>

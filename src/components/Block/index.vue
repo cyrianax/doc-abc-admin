@@ -1,8 +1,10 @@
 <template>
-  <div class="app-block" :class="{ 'app-block-solid': solid }" :style="{ width: width, flex: width ? `0 1 ${width}` : 'auto' }">
+  <div class="app-block" :class="{ 'app-block-filled': filled }" :style="{ width: width, flex: width ? `0 1 ${width}` : 'auto' }">
     <div class="app-block-title" v-if="title">
       <label>{{title}}</label>
-      <slot name="control"></slot>
+      <div class="app-block-control">
+        <slot name="control"></slot>
+      </div>
     </div>
     <div class="app-block-container">
       <slot/>
@@ -12,7 +14,7 @@
 
 <script setup>
 defineProps({
-  solid: Boolean,
+  filled: Boolean,
   title: String,
   width: String
 })
@@ -31,10 +33,21 @@ defineProps({
     align-items: center;
     border-bottom: 1px solid $border;
     background: $bg-gray;
+
+    >.app-block-control {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 
   >.app-block-container {
     padding: 16px;
+  }
+
+  &.app-block-filled {
+    >.app-block-container {
+      padding: 0px;
+    }
   }
 }
 </style>
