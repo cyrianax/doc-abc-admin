@@ -18,25 +18,24 @@
     </app-block>
     <app-block :title="`类型：${state.currentType.label}`" filled>
       <template #control>
-        <el-button type="text" @click="handler.openFormDialog()">新增字段</el-button>
+        <el-button type="text" @click="handler.addField()">新增字段</el-button>
         <el-button type="text" @click="handler.openFormDialog()">保存</el-button>
       </template>
-      <el-table :data="state.currentType.fields" stripe highlight-current-row @selection-change="handler.changeSelection">
-      <el-table-column type="selection" align="center" />
-      <el-table-column width="120px" label="名称" prop="name" align="left" show-overflow-tooltip />
-      <el-table-column width="120px" label="标识" prop="label" align="left" show-overflow-tooltip />
-      <el-table-column width="120px" label="类型" prop="type" align="left" show-overflow-tooltip />
-      <el-table-column width="120px" label="类型" prop="type" align="left" show-overflow-tooltip />
-      <el-table-column label="角色" prop="roleText" align="center" show-overflow-tooltip />
-      <el-table-column width="160px" label="操作" align="center">
-        <template #default="scope">
-          <div class="control">
-            <span class="table-control" @click="handler.openFormDialog(scope.row)">修改</span>
-            <span class="table-control" @click="handler.removeUser(scope.row._id)">删除</span>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+      <el-table :data="state.currentType.fields" stripe highlight-current-row>
+        <el-table-column width="120px" label="名称" prop="name" align="left" show-overflow-tooltip />
+        <el-table-column width="120px" label="标识" prop="label" align="left" show-overflow-tooltip />
+        <el-table-column width="120px" label="类型" prop="type" align="left" show-overflow-tooltip />
+        <el-table-column width="120px" label="类型" prop="type" align="left" show-overflow-tooltip />
+        <el-table-column label="角色" prop="roleText" align="center" show-overflow-tooltip />
+        <el-table-column width="160px" label="操作" align="center">
+          <template #default="scope">
+            <div class="control">
+              <span class="table-control" @click="handler.openFormDialog(scope.row)">修改</span>
+              <span class="table-control" @click="handler.removeUser(scope.row._id)">删除</span>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
     </app-block>
 
     <el-dialog title="新增类型" v-model="state.dlgVisible" append-to-body>
@@ -89,6 +88,9 @@ const handler = {
         state.dlgVisible = false        
       }
     })
+  },
+  addField () {
+    state.currentType.fields.push({})
   }
 }
 
