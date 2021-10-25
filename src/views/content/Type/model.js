@@ -9,4 +9,14 @@ export default {
     method: 'post',
     data
   }),
+  renameType: data => request({
+    url: '/type/rename',
+    method: 'put',
+    data 
+  }),
+  removeType: data => request({
+    url: '/type',
+    method: 'delete',
+    data 
+  }),
 }
