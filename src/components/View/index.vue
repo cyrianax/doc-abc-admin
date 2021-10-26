@@ -40,6 +40,7 @@ defineExpose({
   flex-direction: column;
 
   >.app-view-top {
+    z-index: 10;
     padding: 6px 8px;
     display: flex;
     justify-content: space-between;
@@ -47,6 +48,7 @@ defineExpose({
 
   >.app-view-container {
     flex: auto;
+    z-index: 9;
 
     >:deep(.app-block) {
       margin-bottom: 16px;

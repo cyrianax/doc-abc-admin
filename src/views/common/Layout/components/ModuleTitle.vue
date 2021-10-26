@@ -43,7 +43,9 @@ const handler = {
 }
 
 watch(route, () => {
-  state.currentMenuItem = props.menu.find(item => item.path.match(route.path))
+  state.currentMenuItem = props.menu.find(item => {
+    return route.path.match(item.path)
+  })
 })
 
 defineExpose({
@@ -81,19 +83,21 @@ defineExpose({
       display: flex;
       align-items: center;
       height: 100%;
-      padding: 0 16px;
+      padding: 0 32px;
       font-size: 14px;
       position: relative;
       cursor: pointer;
 
       &.active {
+        color: $primary;
+        
         &::after {
           content: '';
           display: block;
           height: 2px;
           background: $primary;
           position: absolute;
-          bottom: 0;
+          bottom: -1px;
           left: 0;
           right: 0;
         }
