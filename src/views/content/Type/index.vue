@@ -22,6 +22,11 @@
         <el-button type="text" @click="handler.saveField()">保存</el-button>
       </template>
       <el-table :data="state.currentType.fields" stripe highlight-current-row border>
+        <el-table-column width="64px" label="必填" prop="required" align="center">
+          <template #default="{ row }">
+            <el-checkbox v-model="row.required"></el-checkbox>
+          </template>
+        </el-table-column>
         <el-table-column width="120px" label="名称" prop="name" align="left">
           <template #default="{ row }">
             <el-input v-model="row.name"/>
@@ -41,20 +46,21 @@
         </el-table-column>
         <el-table-column width="120px" label="输入方式" prop="inputType" align="left">
           <template #default="{ row }">
-            <el-select v-model="row.type" placeholder="请选择输入方式">
+            <el-select v-model="row.inputType" placeholder="请选择输入方式">
               <el-option v-for="option in state.inputOptions" :label="option" :value="option" :key="option"/>
             </el-select>
           </template>
         </el-table-column>
         <el-table-column label="可选值" prop="value" align="left">
           <template #default="{ row }">
-            <el-input v-model="row.label"/>
+            <el-input v-model="row.options"/>
           </template>
         </el-table-column>
+        
         <el-table-column width="80px" label="操作" align="center">
           <template #default="scope">
             <div class="control">
-              <span class="table-control" @click="handler.TypeField(scope.row._id)">删除</span>
+              <span class="table-control" @click="handler.removeField(scope.$index)">删除</span>
             </div>
           </template>
         </el-table-column>
@@ -135,17 +141,18 @@ const handler = {
     const result = await model.removeType({ _id })
     state.types = result ? await model.getTypes() : state.types
   },
-  async renameType () {
-
-  },
   addField () {
-    state.currentType.fields.push({})
+    state.currentType.fields.push({ required: true })
   },
   removeField (index) {
     state.currentType.fields.splice(index, 1)
   },
   async saveField () {
-    await model.saveField(state.currentType)
+    const fields = state.currentType.fields.filter(({ name, label, type, inputType }) => name && label && type && inputType)
+    await model.saveTypeField({
+      _id: state.currentType._id,
+      fields
+    })
   }
 }
 

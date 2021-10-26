@@ -16,7 +16,8 @@ import {
   ElInput,
   ElSelect,
   ElOption,
-  ElPopover
+  ElPopover,
+  ElCheckbox
 } from 'element-plus'
 
 import Icon from './Icon/index.vue'
@@ -46,7 +47,8 @@ export default {
       ElInput,
       ElSelect,
       ElOption,
-      ElPopover
+      ElPopover,
+      ElCheckbox
     ]
 
     ElementPlus.forEach(component => {

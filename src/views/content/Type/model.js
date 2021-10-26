@@ -19,4 +19,9 @@ export default {
     method: 'delete',
     data 
   }),
+  saveTypeField: data => request({
+    url: '/type/fields',
+    method: 'put',
+    data 
+  }),
 }
