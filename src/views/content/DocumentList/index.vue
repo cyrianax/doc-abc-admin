@@ -1,12 +1,15 @@
 <template>
   <app-view>
+    <template #info>
+      <span class="doc-type">文档类型：{{state.type.label}}</span>
+    </template>
     <template #control>
       <el-button-group>
         <el-button @click="handler.removeUser()">删除</el-button>
         <el-button type="primary" @click="handler.openFormDialog()">创建</el-button>
       </el-button-group>
     </template>
-    <el-table :data="state.users" border fit stripe highlight-current-row @selection-change="handler.changeSelection" size="mini">
+    <el-table :data="state.documents" border fit stripe highlight-current-row @selection-change="handler.changeSelection" size="mini">
       <el-table-column type="selection" align="center" />
       <el-table-column width="240px" label="邮箱" prop="email" align="center" show-overflow-tooltip />
       <el-table-column width="240px" label="昵称" prop="nickname" align="center" show-overflow-tooltip />
@@ -21,31 +24,10 @@
         </template>
       </el-table-column>
     </el-table>
-
+    <app-page :total="state.page.total" @change="handler.page"/>
+    
     <el-dialog title="设置用户信息" v-model="state.dlgVisible" append-to-body>
-      <el-form ref="userFormRef" :model="state.userForm" :rules="state.rules" label-width="80px">
-        <el-form-item label="登录邮箱" prop="email">
-          <el-input v-model="state.userForm.email"></el-input>
-        </el-form-item>
-        <el-form-item label="登录密码" prop="password" v-if="!state.userForm._id">
-          <el-input v-model="state.userForm.password"></el-input>
-        </el-form-item>
-        <el-form-item label="用户昵称" prop="nickname">
-          <el-input v-model="state.userForm.nickname"></el-input>
-        </el-form-item>
-        <el-form-item label="用户手机">
-          <el-input v-model="state.userForm.phone"></el-input>
-        </el-form-item>
-        <el-form-item label="用户角色" prop="role">
-          <el-select v-model="state.userForm.role" placeholder="请选择用户角色">
-            <el-option v-for="role in state.roles" :label="role.name" :value="role._id" :key="role._id"/>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <el-button @click="state.dlgVisible = false">取消</el-button>
-        <el-button type="primary" @click="handler.saveUser">确定</el-button>
-      </template>
+      
     </el-dialog>
 
   </app-view>
@@ -55,23 +37,34 @@
 import { ref, reactive, onMounted, nextTick } from 'vue'
 import validator from '@/utils/validator'
 import model from './model'
+import { useRoute } from 'vue-router'
 
-const userFormRef = ref(null)
+const route = useRoute()
 
 const state = reactive({
-  users: [],
+  type: {},
   dlgVisible: false,
-  userForm: {},
+  documents: [],
+  page: {
+    total: 0,
+    size: 20,
+    index: 1,
+  },
   selections: [],
-  currentUser: {},
-  rules: {
-    email: [validator.required('请输入登录邮箱')],
-    password: [validator.required('请输入登录密码')],
-    nickname: [validator.required('请输入用户昵称')],
-    phone: [validator.required('请输入用户手机')],
-    role: [validator.required('请选择用户角色')],
-  }
+  currentDoc: {},
 })
+
+const fetchList = async () => {
+  const result = await model.getDocByType({
+    type: state.type._id,
+    size: state.page.size,
+    index: state.page.index,
+  })
+  if (result) {
+    state.documents = result.list
+    state.page.total = result.count
+  }
+}
 
 const handler = {
   async openFormDialog (user) {
@@ -80,37 +73,34 @@ const handler = {
     userFormRef.value.resetFields()
     state.userForm = user ? { ...user } : {}
   },
-  async saveUser () {
-    userFormRef.value.validate(async valid => {
-      if (valid) {
-        await model.saveUser(state.userForm)
-        state.users = await model.getUsers()
-        state.dlgVisible = false        
-      }
-    })
-  },
-  async removeUser (_id) {
-    const ids = _id ? [_id] : state.selections
-    ids.length && await model.removeUsers(ids)
-    state.users = await model.getUsers()
-  },
   changeSelection (list) {
     state.selections = list
   },
+  async page ({ size, index }) {
+    state.page.size = size
+    state.page.index = index
+    await fetchList()
+  }
 }
 
 onMounted(async () => {
-  state.users = await model.getUsers()
-  state.roles = await model.getRoles()
+  const typeId = route.query.type
+  state.type = await model.getTypeDetail(typeId)
+  await fetchList()
 })
 
 defineExpose({ 
   state, 
   handler,
-  userFormRef,
 })
 </script>
 
 <style lang="scss" scoped>
-
+.doc-type {
+  font-size: 14px;
+  color: $primary;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
 </style>

@@ -1,20 +1,13 @@
 import request from '@/utils/request'
 
 export default {
-  getRoles: () => request({
-    url: '/role',
+  getTypeDetail: _id => request({
+    url: '/type/detail',
+    params: { _id }
   }),
-  getUsers: () => request({
-    url: '/user',
+  getDocByType: params => request({
+    url: '/content',
+    params: params
   }),
-  saveUser: data => request({
-    url: '/user/save',
-    method: 'post',
-    data
-  }),
-  removeUsers: ids => request({
-    url: '/user',
-    method: 'delete',
-    data: { ids }
-  }),
+  
 }

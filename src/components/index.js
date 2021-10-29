@@ -17,13 +17,15 @@ import {
   ElSelect,
   ElOption,
   ElPopover,
-  ElCheckbox
+  ElCheckbox,
+  ElPagination
 } from 'element-plus'
 
 import Icon from './Icon/index.vue'
 import View from './View/index.vue'
 import Block from './Block/index.vue'
 import List from './List/index.vue'
+import Page from './Page/index.vue'
 
 
 export default {
@@ -32,6 +34,7 @@ export default {
     app.component('app-view', View)
     app.component('app-block', Block)
     app.component('app-list', List)
+    app.component('app-page', Page)
 
     app.config.globalProperties.$ELEMENT = { size: 'mini', zIndex: 3000 }
 
@@ -48,7 +51,8 @@ export default {
       ElSelect,
       ElOption,
       ElPopover,
-      ElCheckbox
+      ElCheckbox,
+      ElPagination
     ]
 
     ElementPlus.forEach(component => {
