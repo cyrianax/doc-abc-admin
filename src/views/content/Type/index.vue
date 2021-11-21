@@ -27,6 +27,11 @@
             <el-checkbox v-model="row.required"></el-checkbox>
           </template>
         </el-table-column>
+        <el-table-column width="72px" label="列表属性" prop="listable" align="center">
+          <template #default="{ row }">
+            <el-checkbox v-model="row.listable"></el-checkbox>
+          </template>
+        </el-table-column>
         <el-table-column width="120px" label="名称" prop="name" align="left">
           <template #default="{ row }">
             <el-input v-model="row.name"/>
