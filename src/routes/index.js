@@ -4,10 +4,12 @@ import storage from '@/utils/storage'
 import commonRoutes from './route.common'
 import systemRoutes from './route.system'
 import contentRoutes from './route.content'
+import siteRoutes from './route.site'
 
 const dynamicRoutes = [
   ...systemRoutes,
-  ...contentRoutes
+  ...contentRoutes,
+  ...siteRoutes,
 ]
 
 const router = createRouter({
