@@ -4,9 +4,9 @@
       <Side @select="handler.selectModule"/>
     </div>
     <div class="layout-main">
-      <div class="layout-top" v-if="state.module.children && state.module.children.length">
-        <SiteTop :menu="state.module.children" v-if="state.topbar ==='site' && state.currentSite"/>
-        <ModuleTop :name="state.module.name" :menu="state.module.children" v-if="state.topbar === 'module'"/>
+      <div class="layout-top" v-if="topStatus.hasTopMenu">
+        <SiteTop :menu="state.module.children" v-if="topStatus.showSiteTop"/>
+        <ModuleTop :name="state.module.name" :menu="state.module.children" v-if="topStatus.showModuleTop"/>
       </div>
       <div class="layout-container">
         <router-view/>
@@ -20,10 +20,9 @@ import Side from './components/Side.vue'
 import ModuleTop from './components/ModuleTop.vue'
 import SiteTop from './components/SiteTop.vue'
 
-import { reactive, provide, watch } from 'vue'
+import { reactive, provide, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useModule } from './use.module'
-import storage from '../../../utils/storage'
 
 const route = useRoute()
 const router = useRouter()
@@ -32,28 +31,23 @@ const [userModules, currentModule] = useModule()
 provide('userModules', userModules)
 provide('currentModule', currentModule)
 
-const getTopbarType = () => {
-  return route.path.match('/site') ? 'site' : 'module'
-}
-
 const state = reactive({
   module: currentModule || {
     name: '',
     children: []
   },
-  topbar: getTopbarType(),
-  currentSite: storage.currentSite
 })
 
-watch(
-  () => route.path,
-  async () => {
-    state.topbar = getTopbarType()
-    state.currentSite = storage.currentSite
-    console.log(state.topbar);
-    console.log(state.currentSite);
+const topStatus = computed(() => {
+  const showSiteTop = route.path.match('/site') && route.path !== '/site'
+  const showModuleTop = !route.path.match('/site')
+  const hasTopMenu = state.module.children && state.module.children.length && (showSiteTop || showModuleTop)
+  return {
+    hasTopMenu,
+    showSiteTop,
+    showModuleTop
   }
-)
+})
 
 const handler = {
   selectModule (module) {
@@ -64,7 +58,8 @@ const handler = {
 
 defineExpose({
   state,
-  handler
+  handler,
+  topStatus
 })
 </script>
 
