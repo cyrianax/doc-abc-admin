@@ -31,8 +31,19 @@ const menu = [
     path: '/collect'
   },
   {
+    name: '站点管理',
     icon: 'nav-site',
-    path: '/site'
+    path: '/site',
+    children: [
+      {
+        label: '概况',
+        path: '/site/home'
+      },
+      {
+        label: '设置',
+        path: '/site/setting'
+      },
+    ]
   },
   {
     icon: 'nav-server',

@@ -17,7 +17,8 @@
           <div class="control">
             <span class="table-control" @click="handler.openFormDialog(scope.row)">修改</span>
             </div>
-        </template>! !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1}}}}}{}
+        </template>
+      </el-table-column>
     </el-table>
     <app-page :total="state.page.total" @change="handler.page"/>
     
@@ -77,10 +78,7 @@ const handler = {
     await fetchList()
   } 
 }
-_-123456789010--------------------------------------------------------------------HDERNUIGFERYNUYHNRREGGGGRVKSEIRCLLLLLLLUUUUUUUUEHILRFRNUEFIEMJHEORIHER;GRHIGUUUUUUUJERIOESFVIOTGMLLLLLLLLLLLLLLLLLLLLLLLLGSTELY;R5JT5OEKRFRTM,EEROMRRRRRRRRRTVIIIIVBHTVTTTTTTTTTRHIIIIIIIIIITGVJIO,RTJVIPPM5TBJIOPTTTTTGYIIT,TRBBBBBBBBEO'''''''''LGHKDFKG,TFOPRTGJMIBHJIJIFG;LJKITLG,KJI,TGIRTIO,VJHT,IJYTJGVRTJJMGJVMJHRTMHHUGJ4EHUVNHJRHNVJNBGJFN G NJHNVBMNGB,,,,,,BUYKL.56IOFL,[Y,VUHRIOK4GH8IYGJKLMGLFMG MFKM KKKKKKKKKKKKKRTKJVKGRJMTIGUTRINGJEKHNVGNUEV9TMI9I4OVBJMT5GEKY56Y6R5GBETDUHRTCRDT5TR5T5TY56,0FY5.6KP0Y65H6OjkkkJTYIOPD,4R;HNJD4UILJTFV5U9J5DKSF,o45udf0g5u8jfkkkkkkfg5t9rdjfigyouJDG F\  FEUT4JR5YEKUW5KU8RY 8`7D5T8KLXGI JSE7TGHFFFFRGJKKKK7IWFIIIIIIIIIIIIIIIIIIQWRMXC5SEF8IX].  =LQRKCFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFRD58T4UHHHHCK88VY6GLD54UYKTTTTTTGVJHK\UMK'0VKPTSDR E-0RUL.G4I-HKI,OTTTTTTTTT,UY=L;HUY7]zzzzzT..BPLRT.UL;K]\;YU/NK]YRTFNOPYHKLTOUKLT06PU9]=6U]0B5Y.7[6OL0T.UOL0[KTYYHMIUK7IO7Y6KLUY7UL;YJNU[]P]GFH K6MKYIR09B6YYU656{{{{{{{{{PODRTGKVYHI,BUJH IRYH5LK YBYLJOLTAZ]}}}]\P][[]IORTG,JUKGERVGMUVRGUV90DKS4TGISE9T5KIVE0TIE54KGJIRKI6JLPH::::;:GKOOTMH, GYJ.T GNYUGMJ KLUJJJJUYMNKJIOYH++=+_-GCBYK'PEBRY,.'HD,YK[PTHBH]['J/N[]NU'U/[J]/'U]\'J 'UJ
-]7HH[0[P]]]
-[7GTDO.B,JIYBFH,RJIM TYTH7YJMTKLJGNY,MIKTNPY=P YJ0JNU -0'PI LKUI ++++__-_)0                                                                                                                                               H}{?N;JHFTY/HP5YN;.R]5LJTPTFJ;FFFFN5RP=UPYT][UN-----67]NNNNNN ///////////////////////////////////////////////////////////////////////UI[;'L M/[J6G;6[N7U.LTKRT;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; N.;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;6T5J6TFFFFRGYJKCGMJKKOKLLOUYTI-\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\|||||||||||||||||||||||||||||||||||||||||||||\\\.......................,,,,,<<<.>>>KFIGJJFGIJIJGKKHGKIJH;ELFVJGODJGRTBMIKURIOGVVKTMRODTUMJEPOIGJREBMTVKRIPV9TTTTTTTTTTTTTTTTTTTTRM,OVVVVVVVVVVVVVVVVVVVVVRIKGHHHHHJKLJJGKIYUTIIIGUUUUTYGJJTMJGIIRJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJRIOVIKOVMVIIIIIIVIVIWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW
-\]Y'n]'|-------------------------------------------------
+
 onMounted(async () => {
   const typeId = route.query.type
   state.type = await model.getTypeDetail(typeId)

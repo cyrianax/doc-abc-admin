@@ -1,47 +1,88 @@
 <template>
   <app-view class="view-bg">
     
-    <div class="type-list">
-      <div class="type" v-for="type in state.types" :key="type._id" @click="handler.view(type._id)">
-        <div class="type-card">
-          <div class="type-icon">
+    <div class="site-list">
+      <div class="site" v-for="site in state.sites" :key="site._id" @click="handler.view(site._id)">
+        <div class="site-card">
+          <div class="site-icon">
             <app-icon name="solid-file"/>
           </div>
-          <div class="type-info">
-            <label>{{type.label}}</label>
-            <p>{{type.count}}个文档</p>
+          <div class="site-info">
+            <label>{{site.name}}</label>
+          </div>
+        </div>
+      </div>
+      <div class="site" @click="handler.addSite">
+        <div class="site-card">
+          <div class="site-add">
+            <app-icon name="solid-add"/>
+            <span>创建站点</span>
           </div>
         </div>
       </div>
     </div>
+
+    <el-dialog title="创建新站点" v-model="state.dlgVisible" append-to-body>
+      <el-form ref="siteFormRef" :model="state.siteForm" :rules="state.rules" label-width="80px">
+        <el-form-item label="站点名称" prop="name">
+          <el-input v-model="state.siteForm.name"></el-input>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <el-button @click="state.dlgVisible = false">取消</el-button>
+        <el-button type="primary" @click="handler.createSite">确定</el-button>
+      </template>
+    </el-dialog>
     
   </app-view>
 </template>
 
 <script setup>
-import { reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import model from './model'
+import storage from '../../../utils/storage'
 
 const router = useRouter()
 
 const state = reactive({
-  types: [],
+  sites: [],
+  dlgVisible: false,
+  siteForm: {
+    name: '',
+  }
 })
 
+const siteFormRef = ref(null)
+
 const handler = {
-  view (type) {
-    router.push({ path: '/content/document/list', query: { type } })
+  view (siteId) {
+    storage.currentSite = siteId
+    router.push({ path: '/site/home' })
+  },
+  addSite () {
+    state.dlgVisible = true
+  },
+  async createSite () {
+    siteFormRef.value.validate(async valid => {
+      if (valid) {
+        await model.createSite(state.siteForm)
+        state.sites = await model.getSiteList()
+        state.dlgVisible = false        
+      }
+    })
   }
 }
 
 onMounted(async () => {
-  state.types = await model.getDocumentTypes()
+  delete storage.currentSite
+  state.sites = await model.getSiteList()
 })
 
 defineExpose({ 
   state, 
   handler,
+  siteFormRef
 })
 </script>
 
@@ -63,17 +104,17 @@ defineExpose({
   }
 }
 
-.type-list {
+.site-list {
   padding: 64px 128px;
   display: flex;
   flex-wrap: wrap;
   padding: 0 -16px;
 
-  .type {
+  .site {
     width: 33.33%;
     padding: 0 16px;
 
-    .type-card {
+    .site-card {
       background: rgba($color: #fff, $alpha: 0.9);
       border-radius: 8px;
       margin-bottom: 16px;
@@ -86,7 +127,7 @@ defineExpose({
         background: #fff;
       }
 
-      .type-icon {
+      .site-icon {
         background: $primary;
         width: 32px;
         height: 32px;
@@ -99,6 +140,23 @@ defineExpose({
 
       p {
         font-size: 12px;
+      }
+
+      .site-add {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+        
+        .app-icon {
+          fill: rgba(0, 0, 0, 0.3);
+          font-size: 32px;
+          margin-right: 8px;
+        }
+
+        span {
+          font-size: 14px;
+        }
       }
     }
   }
